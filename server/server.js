@@ -7,9 +7,15 @@ app.use(
   createProxyMiddleware({
     target: 'http://192.168.230.34:8080',
     changeOrigin: true,
+    onError: (err, req, res) => {
+      console.error('Proxy error:', err);
+      res.status(500).send('Something went wrong.');
+    },
   })
 );
 
-app.listen(3000, () => {
-  console.log('Proxy server is running on port 3000');
+// Start the server
+const PORT = process.env.PORT || 3000; // Use environment variable for the port
+app.listen(PORT, () => {
+  console.log(`Proxy server is running on port ${PORT}`);
 });
